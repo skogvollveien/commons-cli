@@ -1,27 +1,48 @@
 #include "buffer.h"
 
+
+
 int main(int argc, char const *argv[])
 {
-	draw_separator("START BUFFER");
 
-	for(int i = 0; i < 50; i++)
+	int linecount = 50;
+
+	if(argc > 1)
+	{
+		linecount = atoi(argv[1]);
+		if(linecount < 1)
+		{
+			print_usage();
+		}
+	}
+
+
+	draw_separator("START BUFFER", true);
+
+	for(int i = 0; i < linecount; i++)
 	{
 		printf("\n");
 	}
 
-	draw_separator("END BUFFER");
+	draw_separator("END BUFFER", false);
 
 	return 0;
 }
 
-void draw_separator(char* message)
+void draw_separator(char* message, bool top)
 {
 
 	int length = strlen(message) + 4;
-
-	draw_line(length);
-	printf("| %s |\n", message);
-	draw_line(length);
+	if(top)
+	{
+		draw_line(length);
+	}
+	printf("  %s  \n", message);
+	if(!top)
+	{
+		draw_line(length);
+	}
+	
 }
 
 void draw_line(int length)
@@ -31,4 +52,10 @@ void draw_line(int length)
 		printf("=");
 	}
 	printf("\n");
+}
+
+void print_usage()
+{
+	printf("%s\n", "Usage: buffer [linecount:int]");
+	exit(0);
 }
