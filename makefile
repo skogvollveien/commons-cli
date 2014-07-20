@@ -4,14 +4,15 @@ CC = gcc
 
 CFLAGS = -std=c11 -Wall -Werror
 
+# All the files to be compiled and stuffed in /bin.
+FILES = defs.c buffer.c
+
 all:
 	mkdir -p bin
-	$(CC) defs.c $(CFLAGS) -o bin/defs
-	$(CC) buffer.c $(CFLAGS) -o bin/buffer
+	$(foreach file,$(FILES),$(CC) $(file) $(CFLAGS) -o $(patsubst %.c,bin/%,$(file));)
 
 clean:
 	rm -rf bin
 
 install:
-	cp bin/defs /bin
-	cp bin/buffer /bin
+	$(foreach filewithextension,$(FILES),cp $(patsubst %.c,bin/%,$(filewithextension)) /bin;)
