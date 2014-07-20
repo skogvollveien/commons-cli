@@ -1,10 +1,11 @@
 #include <stdio.h>
 
-int main(int argc, char const *argv[])
+int main(void)
 {
-	while(1)
+	while (1)
 	{
 		printf("\n");
 	}
+
 	return 0;
 }
