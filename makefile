@@ -1,18 +1,23 @@
-SHELL = /bin/sh
-
 CC = gcc
-
 CFLAGS = -std=c11 -Wall -Werror
 
-# All the files to be compiled and stuffed in /bin.
-FILES = defs.c buffer.c
+BUILDDIR=bin
+DESTDIR=/usr/bin
+SOURCES:=$(wildcard *.c)
+EXECUTABLES:=$(addprefix $(BUILDDIR)/,$(SOURCES:.c=))
 
-all:
-	mkdir -p bin
-	$(foreach file,$(FILES),$(CC) $(file) $(CFLAGS) -o $(patsubst %.c,bin/%,$(file));)
+$(shell mkdir -p $(BUILDDIR))
+
+all: $(EXECUTABLES)
+
+$(BUILDDIR)/%: %.c
+	$(CC) $(CFLAGS) $< -o $@
 
 clean:
 	rm -rf bin
 
-install:
-	$(foreach filewithextension,$(FILES),cp $(patsubst %.c,bin/%,$(filewithextension)) /bin;)
+install: all
+	install -d $(DESTDIR)
+	install $(EXECUTABLES) $(DESTDIR)
+
+.PHONY: all clean install
